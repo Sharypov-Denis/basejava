@@ -1,3 +1,8 @@
+import netscape.security.UserTarget;
+
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 /**
  * Array based storage for Resumes
  */
@@ -6,7 +11,9 @@ public class ArrayStorage {
 
     void clear() {
         for (int i = 0; i < storage.length; i++) {
-            storage[i] = null;
+            if (storage[i] != null) {
+                storage[i] = null;
+            }
         }
     }
 
@@ -31,12 +38,18 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
+        ArrayList<Resume> resumeArrayList = new ArrayList<>();
         for (int i = 0; i < storage.length; i++) {
-            if (storage[i].getUuid().equals(uuid)) {
-                storage[i] = null;
-                break;
+            if (storage[i] != null) {
+                if (storage[i].getUuid().equals(uuid)) {
+                    storage[i] = null;
+                } else {
+                    resumeArrayList.add(storage[i]);
+                }
             }
         }
+        clear();
+        resumeArrayList.toArray(storage);
     }
 
     /**
@@ -59,6 +72,12 @@ public class ArrayStorage {
     }
 
     int size() {
-        return storage.length;
+        int size = 0;
+        for (int i = 0; i < storage.length; i++) {
+            if (storage[i] != null) {
+                size++;
+            }
+        }
+        return size;
     }
 }
