@@ -2,12 +2,15 @@ import netscape.security.UserTarget;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Array based storage for Resumes
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10000];
+    int size = 0;
+
 
     void clear() {
         for (int i = 0; i < storage.length; i++) {
@@ -15,12 +18,14 @@ public class ArrayStorage {
                 storage[i] = null;
             }
         }
+        size = 0;
     }
 
     void save(Resume r) {
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] == null && storage[i] != r) {
                 storage[i] = r;
+                size++;
                 break;
             }
         }
@@ -38,18 +43,22 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        ArrayList<Resume> resumeArrayList = new ArrayList<>();
+        Resume[] resumeDelete = new Resume[1000];
+        int positionNewArray = 0;
         for (int i = 0; i < storage.length; i++) {
             if (storage[i] != null) {
                 if (storage[i].getUuid().equals(uuid)) {
-                    storage[i] = null;
+                    size--;
                 } else {
-                    resumeArrayList.add(storage[i]);
+                    resumeDelete[positionNewArray] = storage[i];
+                    positionNewArray++;
                 }
+            } else {
+                break;
             }
         }
         clear();
-        resumeArrayList.toArray(storage);
+        storage = Arrays.stream(resumeDelete).toArray(Resume[]::new);
     }
 
     /**
@@ -72,12 +81,6 @@ public class ArrayStorage {
     }
 
     int size() {
-        int size = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                size++;
-            }
-        }
         return size;
     }
 }
