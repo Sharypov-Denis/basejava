@@ -3,6 +3,7 @@ import netscape.security.UserTarget;
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Array based storage for Resumes
@@ -13,28 +14,21 @@ public class ArrayStorage {
 
 
     void clear() {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                storage[i] = null;
-            }
+        for (int i = 0; i < size; i++) {
+            storage[i] = null;
         }
         size = 0;
     }
 
     void save(Resume r) {
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null && storage[i] != r) {
-                storage[i] = r;
-                size++;
-                break;
-            }
-        }
+        storage[size] = r;
+        size++;
     }
 
     Resume get(String uuid) {
         Resume search = null;
         for (Resume resume : storage) {
-            if (resume != null && resume.getUuid().equals(uuid)) {
+            if (resume.getUuid().equals(uuid)) {
                 search = resume;
                 break;
             }
@@ -43,39 +37,26 @@ public class ArrayStorage {
     }
 
     void delete(String uuid) {
-        Resume[] resumeDelete = new Resume[1000];
-        int positionNewArray = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                if (storage[i].getUuid().equals(uuid)) {
-                    size--;
-                } else {
-                    resumeDelete[positionNewArray] = storage[i];
-                    positionNewArray++;
-                }
-            } else {
-                break;
+        boolean delete = false;
+        for (int i = 0; i < size + 1; i++) {
+            if (storage[i].getUuid().equals(uuid)) {
+                storage[i] = storage[i + 1];
+                size--;
+                delete = true;
+            }
+            if (delete) {
+                storage[i] = storage[i + 1];
             }
         }
-        clear();
-        storage = Arrays.stream(resumeDelete).toArray(Resume[]::new);
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        int count = 0;
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                count = i;
-            }
-        }
-        Resume[] resumeAll = new Resume[count + 1];
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] != null) {
-                resumeAll[i] = storage[i];
-            }
+        Resume[] resumeAll = new Resume[size];
+        for (int i = 0; i < size; i++) {
+            resumeAll[i] = storage[i];
         }
         return resumeAll;
     }
