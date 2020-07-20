@@ -4,8 +4,9 @@ import exception.StorageException;
 import model.Resume;
 
 import java.util.Arrays;
+import java.util.List;
 
-public abstract class AbstractArrayStorage extends AbstractStorage {
+public abstract class AbstractArrayStorage extends AbstractStorage<Integer> {
     protected static final int STORAGE_LIMIT = 10000;
 
     protected Resume[] storage = new Resume[STORAGE_LIMIT];
@@ -21,19 +22,22 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void doUpdate(Resume r, Object index) {
+    protected void doUpdate(Resume r, Integer index) {
         storage[(Integer) index] = r;
     }
 
     /**
      * @return array, contains only Resumes in storage (without null)
      */
-    public Resume[] getAll() {
+    /*
+    public List<Resume> getAllSorted() {
         return Arrays.copyOfRange(storage, 0, size);
     }
 
+     */
+
     @Override
-    protected void doSave(Resume r, Object index) {
+    protected void doSave(Resume r, Integer index) {
         if (size == STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
@@ -43,18 +47,18 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    public void doDelete(Object index) {
+    public void doDelete(Integer index) {
         fillDeletedElement((Integer) index);
         storage[size - 1] = null;
         size--;
     }
 
-    public Resume doGet(Object index) {
+    public Resume doGet(Integer index) {
         return storage[(Integer) index];
     }
 
     @Override
-    protected boolean isExist(Object index) {
+    protected boolean isExist(Integer index) {
         return (Integer) index >= 0;
     }
 
@@ -63,4 +67,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     protected abstract void insertElement(Resume r, int index);
 
     protected abstract Integer getSearchKey(String uuid);
+
+    @Override
+    protected List<Resume> doCopyAll() {
+        return Arrays.asList(Arrays.copyOfRange(storage, 0, size));
+    }
 }

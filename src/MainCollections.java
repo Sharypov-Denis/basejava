@@ -4,16 +4,16 @@ import java.util.*;
 
 public class MainCollections {
     private static final String UUID_1 = "uuid1";
-    private static final Resume RESUME_1 = new Resume(UUID_1);
+    private static final Resume RESUME_1 = new Resume(UUID_1, "Name 1");
 
     private static final String UUID_2 = "uuid2";
-    private static final Resume RESUME_2 = new Resume(UUID_2);
+    private static final Resume RESUME_2 = new Resume(UUID_2,"Name 2");
 
     private static final String UUID_3 = "uuid3";
-    private static final Resume RESUME_3 = new Resume(UUID_3);
+    private static final Resume RESUME_3 = new Resume(UUID_3,"Name 3");
 
     private static final String UUID_4 = "uuid4";
-    private static final Resume RESUME_4 = new Resume(UUID_4);
+    private static final Resume RESUME_4 = new Resume(UUID_4, "Name 4");
 
     public static void main(String[] args) {
         Collection<Resume> collection = new ArrayList<>();
@@ -52,5 +52,15 @@ public class MainCollections {
         for (Map.Entry<String, Resume> entry : map.entrySet()) {
             System.out.println(entry.getValue());
         }
+
+        List<Resume> resumes = new ArrayList<>();
+        // List<Resume> resumes == Arrays.asList(RESUME_1, RESUME_2, RESUME_3); так не прокатит,т.к
+        // используется для возврата списка фиксированного размера, подкрепленного указанным массивом.
+        resumes.add(RESUME_1);
+        resumes.add(RESUME_2);
+        resumes.add(RESUME_3);
+        System.out.println(resumes);
+        resumes.remove(RESUME_1);
+        System.out.println(resumes);
     }
 }

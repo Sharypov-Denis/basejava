@@ -5,24 +5,8 @@ import model.Resume;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListStorage extends AbstractStorage {
-
+public class ListStorage extends AbstractStorage<Integer> {
     private List<Resume> list = new ArrayList<>();
-
-    @Override
-    protected void doSave(Resume r, Object searchKey) {
-        list.add(r);
-    }
-
-    @Override
-    protected boolean isExist(Object searchKey) {
-        return searchKey != null;
-    }
-
-    @Override
-    protected void doUpdate(Resume r, Object searchKey) {
-        list.set((Integer) searchKey, r);
-    }
 
     @Override
     protected Integer getSearchKey(String uuid) {
@@ -35,14 +19,28 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume doGet(Object searchKey) {
+    protected boolean isExist(Integer searchKey) {
+        return searchKey != null;
+    }
+
+    @Override
+    protected void doUpdate(Resume r, Integer searchKey) {
+        list.set((Integer) searchKey, r);
+    }
+
+    @Override
+    protected void doSave(Resume r, Integer searchKey) {
+        list.add(r);
+    }
+
+    @Override
+    protected Resume doGet(Integer searchKey) {
         return list.get((Integer) searchKey);
     }
 
     @Override
-    protected void doDelete(Object searchKey) {
+    protected void doDelete(Integer searchKey) {
         list.remove(((Integer) searchKey).intValue());
-
     }
 
     @Override
@@ -51,8 +49,8 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public Resume[] getAll() {
-        return list.toArray(new Resume[list.size()]);
+    public List<Resume> doCopyAll() {
+        return new ArrayList<>(list);
     }
 
     @Override
