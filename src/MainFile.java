@@ -4,6 +4,7 @@ import java.io.IOException;
 
 public class MainFile {
     public static void main(String[] args) {
+
         String filePath = ".\\.gitignore";
         File file = new File("C:\\Intership\\basejava\\.gitignore");
         try {
@@ -11,7 +12,9 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException("Error", e);
         }
+
         File dir = new File("C:\\Intership\\basejava\\src");
+
         System.out.println("проверка isDirectory" + dir.isDirectory());
         String[] list = dir.list();
         if (list != null) {
@@ -24,8 +27,26 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        printDirectoryDeeply(dir);
+
+
+        printDirectoryDeeply(dir, "");
     }
+
+    public static void printDirectoryDeeply(File dir, String offset) {
+        File[] files = dir.listFiles();
+
+        if (files != null) {
+            for (File file : files) {
+                if (file.isFile()) {
+                    System.out.println(offset + "F: " + file.getName());
+                } else if (file.isDirectory()) {
+                    System.out.println(offset + "D: " + file.getName());
+                    printDirectoryDeeply(file, offset + "  ");
+                }
+            }
+        }
+    }
+    /*
     // TODO: make pretty output
     public static void printDirectoryDeeply(File dir) {
         File[] files = dir.listFiles();
@@ -41,6 +62,8 @@ public class MainFile {
             }
         }
     }
+
+     */
 }
 
 //ниже сложная схема

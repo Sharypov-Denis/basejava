@@ -1,5 +1,6 @@
 package model;
 
+
 public enum ContactType {
     PHONE("Тел."),
     MOBILE("Мобильный"),
