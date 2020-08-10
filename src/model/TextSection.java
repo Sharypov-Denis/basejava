@@ -3,7 +3,9 @@ package model;
 import java.util.Objects;
 
 public class TextSection extends Section {
+
     private static final long serialVersionUID = 1L;
+
     private String content;
 
     public TextSection() {
@@ -12,6 +14,10 @@ public class TextSection extends Section {
     public TextSection(String content) {
         Objects.requireNonNull(content, "content must not be null");
         this.content = content;
+    }
+
+    public String getContent() {
+        return content;
     }
 
     @Override
@@ -27,6 +33,7 @@ public class TextSection extends Section {
         TextSection that = (TextSection) o;
 
         return content.equals(that.content);
+
     }
 
     @Override
@@ -34,4 +41,3 @@ public class TextSection extends Section {
         return content.hashCode();
     }
 }
-

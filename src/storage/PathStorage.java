@@ -14,7 +14,6 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class PathStorage extends AbstractStorage<Path> {
-
     private Path directory;
 
     private StreamSerializer streamSerializer;
@@ -22,8 +21,8 @@ public class PathStorage extends AbstractStorage<Path> {
     protected PathStorage(String dir, StreamSerializer streamSerializer) {
         Objects.requireNonNull(dir, "directory must not be null");
 
-        directory = Paths.get(dir);
         this.streamSerializer = streamSerializer;
+        directory = Paths.get(dir);
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
@@ -88,7 +87,7 @@ public class PathStorage extends AbstractStorage<Path> {
 
     @Override
     protected List<Resume> doCopyAll() {
-        return getFilesList().map(path -> doGet(path)).collect(Collectors.toList());
+        return getFilesList().map(this::doGet).collect(Collectors.toList());
     }
 
     private String getFileName(Path path) {
