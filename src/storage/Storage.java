@@ -21,8 +21,5 @@ public interface Storage {
      */
     List<Resume> getAllSorted();
 
-//  return list, sorted by name
-//  List<Resume> getAllSorted();
-
     int size();
 }
