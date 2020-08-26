@@ -1,13 +1,13 @@
 package storage;
 
 
+import util.Config;
 import exception.ExistStorageException;
 import exception.NotExistStorageException;
 import model.ContactType;
 import model.Resume;
 import org.junit.Before;
 import org.junit.Test;
-import util.Config;
 
 import java.io.File;
 import java.util.Arrays;
